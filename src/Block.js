@@ -1,22 +1,29 @@
-import React from "react"
+import React, { useEffect } from "react"
+import { css, StyleSheet } from "aphrodite/no-important"
+import { getStyles } from "./getStyles"
 import { defaultConfig } from "./configs"
 
 const Block = (props) => {
-  const { embedHTML } = props // Destructure the props
+  // Get the custom styles to be used in this Block:
+  const classes = StyleSheet.create(getStyles(props))
+  // Element helper function to combine Atomic CSS with the custom styles:
+  const joinClasses = props.joinClasses
 
-  // Load the Twitter embed external script file
-  props.utils.addScript(
-    "https://platform.twitter.com/widgets.js",
-    false, // optional boolean: include the defer attribute
-    true // optional boolean:  include the async attribute,
-  )
+  // Destructure the banner text and optional link from the props:
+  const { embedHTML } = props
 
-  // Load the Instagram embed external script file
-  props.utils.addScript(
-    "https://www.instagram.com/embed.js",
-    false, // optional boolean: include the defer attribute
-    true // optional boolean:  include the async attribute,
-  )
+  // React's Effect Hook (useEffect) runs a function when the Block is rendered
+  useEffect(() => {
+    // Add a link to the third-party script
+    props.utils.addScript(
+      "https://platform.twitter.com/widgets.js",
+      false, // optional boolean: include the defer attribute
+      false // optional boolean:  include the async attribute,
+    )
+    console.log("test")
+  }, [])
+  // props.utils.addScript("https://platform.twitter.com/widgets.js")
+  // The second parameter is an empty array, [], to make useEffect run just once
 
   // The editorFull Element Proptype returns html as text, not HTML markup.
   // React requires an object with the __html property to mark it as HTML:
@@ -26,7 +33,7 @@ const Block = (props) => {
   const outputDiv = (
     <div
       // Combine Atomic CSS classes with custom styles using joinClasses:
-      className="ma0 pa3"
+      className={joinClasses("ma0 pa3", css(classes.banner))}
       // The class ma0 sets all margins to 0, and pa3 sets padding to 1rem.
 
       // dangerouslySetInnerHTML will render HTML markup, such as headings:
