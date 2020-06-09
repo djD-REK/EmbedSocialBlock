@@ -1,9 +1,7 @@
 const tenantId = "$YOUR_TENANT_ID"
 
 const localEnvPropOverrides = {
-  //  embedHTML: `<blockquote class="twitter-tweet"><p lang="en" dir="ltr">To follow what’s happening in real time, tap the ✨ located at the top right of your Home timeline to change from seeing top Tweets to latest Tweets first.</p>&mdash; Twitter Support (@TwitterSupport) <a href="https://twitter.com/TwitterSupport/status/1267105441278033920?ref_src=twsrc%5Etfw">May 31, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" type="text/javascript"></script> `,
-  embedHTML: `<blockquote class="twitter-tweet"><p lang="en" dir="ltr">To follow what’s happening in real time, tap the ✨ located at the top right of your Home timeline to change from seeing top Tweets to latest Tweets first.</p>&mdash; Twitter Support (@TwitterSupport) <a href="https://twitter.com/TwitterSupport/status/1267105441278033920?ref_src=twsrc%5Etfw">May 31, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" type="text/jsx"></script> `,
-  //   embedHTML: `<blockquote class="twitter-tweet"><p lang="en" dir="ltr">To follow what’s happening in real time, tap the ✨ located at the top right of your Home timeline to change from seeing top Tweets to latest Tweets first.</p>&mdash; Twitter Support (@TwitterSupport) <a href="https://twitter.com/TwitterSupport/status/1267105441278033920?ref_src=twsrc%5Etfw">May 31, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> `,
+  // embedHTML: `<blockquote class="twitter-tweet"><p lang="en" dir="ltr">To follow what’s happening in real time, tap the ✨ located at the top right of your Home timeline to change from seeing top Tweets to latest Tweets first.</p>&mdash; Twitter Support (@TwitterSupport) <a href="https://twitter.com/TwitterSupport/status/1267105441278033920?ref_src=twsrc%5Etfw">May 31, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> `,
 }
 
 const dataUtils = {
