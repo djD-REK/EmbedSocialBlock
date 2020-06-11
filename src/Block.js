@@ -4,46 +4,58 @@ import { getStyles } from "./getStyles"
 import { defaultConfig } from "./configs"
 
 const Block = (props) => {
-  // Get the custom styles to be used in this Block:
+  // Get the custom Aphrodite styles to be used in this Block:
   const classes = StyleSheet.create(getStyles(props))
-  // Element helper function to combine Atomic CSS with the custom styles:
+  // Load the helper function that will join Atomic CSS classes with Aphrodite:
   const joinClasses = props.joinClasses
+  // Destructure the HTML embed code from the props:
+  const { embedTweetHTML, embedInstagramHTML } = props
 
-  // Destructure the banner text and optional link from the props:
-  const { embedHTML } = props
-
-  // React's Effect Hook (useEffect) runs a function when the Block is rendered
+  // React's Effect Hook (useEffect) will run code when the Block is rendered:
   useEffect(() => {
-    // Add a link to the third-party script
-    props.utils.addScript(
-      "https://platform.twitter.com/widgets.js",
-      false, // optional boolean: include the defer attribute
-      false // optional boolean:  include the async attribute,
-    )
-    console.log("test")
-  }, [])
-  // props.utils.addScript("https://platform.twitter.com/widgets.js")
-  // The second parameter is an empty array, [], to make useEffect run just once
+    // Add a link to the external Twitter script file:
+    const twitterScript = document.createElement("script")
+    twitterScript.setAttribute("src", "https://platform.twitter.com/widgets.js")
+    twitterScript.setAttribute("async", true)
+    const tweetElement = document.getElementsByClassName("twitter-tweet")[0]
+    // Only add the Twitter script if there is a Tweet to embed:
+    tweetElement ? tweetElement.appendChild(twitterScript) : null
 
-  // The editorFull Element Proptype returns html as text, not HTML markup.
-  // React requires an object with the __html property to mark it as HTML:
+    // Add a link to the external Instagram script file:
+    const instagramScript = document.createElement("script")
+    instagramScript.setAttribute("src", "https://www.instagram.com/embed.js")
+    instagramScript.setAttribute("async", true)
+    const instaElement = document.getElementsByClassName("instagram-media")[0]
+    // Only add the Instagram  script if there is an Instagram Post to embed:
+    instaElement ? instaElement.appendChild(instagramScript) : null
+  }, [])
+  // Passing [] as useEffect's second parameter will run the code just once.
+
+  // Combine the Tweet and the Instagram Post into a single HTML string:
+  const embedHTML = embedTweetHTML + embedInstagramHTML
+  // For HTML markup, React requires an object with the __html property:
   const outputAsMarkup = { __html: embedHTML }
 
   // Make a <div> element based on the banner text using the custom styles:
   const outputDiv = (
     <div
       // Combine Atomic CSS classes with custom styles using joinClasses:
-      className={joinClasses("ma0 pa3", css(classes.banner))}
+      className={joinClasses(
+        "ma0 pa3 flex justify-around",
+        css(classes.banner)
+      )}
       // The class ma0 sets all margins to 0, and pa3 sets padding to 1rem.
+      // flex & justify-around enable CSS flexbox with space around the items.
 
-      // dangerouslySetInnerHTML will render HTML markup, such as headings:
+      // dangerouslySetInnerHTML will render HTML markup, except <script> tags:
       dangerouslySetInnerHTML={outputAsMarkup}
-      // The rich text editor used by the editorFull Element Proptype does
-      // not allow <script> tags to prevent XSS (cross-site scripting).
     ></div>
   )
 
-  return outputDiv
+  // Google AMP pages can't load external JavaScript, so the social media embed
+  // won't be able to load on the AMP version of the Block. For the AMP page,
+  // props.utils.isAmpRequest is true, so return null to render an empty Block:
+  return props.utils.isAmpRequest ? null : outputDiv
 }
 
 Block.defaultProps = defaultConfig
